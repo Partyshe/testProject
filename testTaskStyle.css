@@ -1,0 +1,21 @@
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.labelLeft {
+    text-align:left !important;
+}
+
+.marginRight10 {
+    margin-right: 10px;
+}

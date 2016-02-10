@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+
+<html ng-app="testModule">
+<head>
+    <title>Test Module</title>
+
+    <script src="http://www.datejs.com/build/date.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="https://code.angularjs.org/1.4.9/angular-animate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.2/ui-bootstrap-tpls.min.js"></script>
+    <script src="testTaskScript.js"></script>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="testTaskStyle.css" rel="stylesheet">
+
+</head>
+<body>
+<div ng-controller="testCtrl">
+
+    <!--FORM INPUTS-->
+    <div class="container">
+        <form name="form" class="form-horizontal" role="form" novalidate>
+
+            <!-- TASK NAME -->
+            <div class="form-group">
+                <fieldset>
+                    <label class="labelLeft control-label col-xs-2" for="taskName">Task Name *</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" ng-model="newTask.name" name="taskName" required=""
+                               maxlength="30"/>
+                    </div>
+
+                    <span class="error" ng-show="isTaskNameDuplicate(form.taskName)">
+                            This task name already exists.
+                    </span>
+                </fieldset>
+            </div>
+
+            <!-- HOURS -->
+            <div class="form-group">
+                <label class="labelLeft control-label col-xs-2" for="taskTime">Hours *</label>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control" ng-model="newTask.hours" name="taskTime" required=""
+                           min="0"/>
+                </div>
+            </div>
+
+            <!-- DUE DATE -->
+            <div class="form-group">
+                <!--<fieldset>-->
+                    <label class="labelLeft control-label col-md-2" for="taskDate">Due Date *</label>
+                    <div class="col-md-2">
+                        <div class="input-group col-md-12">
+                            <input id="taskDateInput"
+                                   type="text"
+                                   name="taskDate"
+                                   ng-model="newTask.date"
+                                   class="form-control"
+                                   uib-datepicker-popup
+                                   is-open="popup.opened"
+                                   datepicker-options="dateOptions"
+                                   close-text="Close"
+                                   ng-change="validateDtPicker()"
+                                   ng-paste="validateDtPicker()"
+                                   ng-required="true"/>
+
+                            <span class="input-group-btn">
+                               <button type="button" class="btn btn-default" ng-click="open()">
+                                   <i class="glyphicon glyphicon-calendar"></i>
+                               </button>
+                            </span>
+                        </div>
+                    </div>
+                    <span class="error" ng-show="!isDueDateValid">
+                        {{datePickerErrorMsg}}
+                    </span>
+                <!--</fieldset>-->
+            </div>
+
+            <div class="col-xs-6">
+                <input class="pull-right" type="submit" ng-click="addTask(newTask)" value="Add"
+                       ng-disabled="form.$invalid || isTaskNameDuplicate(form.taskName)"/>
+                <input class="marginRight10 pull-right" type="button" ng-click="clearAll(form)" value="Clear All"/>
+            </div>
+        </form>
+    </div>
+
+    </br>
+    </br>
+
+    <!--TABLE-->
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <table class="table table-bordered ng-hide" ng-show="tasks.length > 0">
+                    <thead>
+                    <tr>
+                        <th>Task Name</th>
+                        <th>Hours</th>
+                        <th>Due Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="task in tasks">
+                        <td>{{ task.name }}</td>
+                        <td>{{ task.hours }}</td>
+                        <td>{{ task.date }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
