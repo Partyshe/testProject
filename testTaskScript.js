@@ -1,5 +1,5 @@
 var testModule = angular.module("testModule", ['ngAnimate', 'ui.bootstrap']);
-testModule.controller("testCtrl", ['$scope', function ($scope) {
+testModule.controller("testCtrl", ['$scope', '$filter', function ($scope, $filter) {
     var hasActualTask = function (expcetedTaskName) {
             var hasTask = false;
 
@@ -29,12 +29,12 @@ testModule.controller("testCtrl", ['$scope', function ($scope) {
         };
     };
     setDefaultTask();
-    
+
     $scope.tasks = [];
 
     $scope.testTasks = [
         {
-            name: 'Abcd', hours: 1, date: Date.today().add(1).days().toString("MM/dd/yyyy")
+            name: 'Abcd', hours: 1, date: Date.today().add(1).days().add(1).years().toString("MM/dd/yyyy")
         },
         {
             name: 'Hij', hours: 3, date: Date.today().add(3).days().toString("MM/dd/yyyy")
@@ -163,5 +163,25 @@ testModule.controller("testCtrl", ['$scope', function ($scope) {
     $scope.order = function(predicate) {
         $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
         $scope.predicate = predicate;
+        var orderBy = $filter('orderBy');
+
+        // Sort dates
+        if(predicate === 'date'){
+            $scope.filteredTasks = $scope.filteredTasks.sort(function(cur, next){
+                var result;
+                if(!$scope.reverse){
+                    result = Date.compare(Date.parse(cur.date), Date.parse(next.date));
+                } else{
+                    result = Date.compare(Date.parse(next.date), Date.parse(cur.date));
+                }
+
+                return result;
+            });
+        }
+        // Sort strings and numbers
+        else {
+            $scope.filteredTasks = orderBy($scope.filteredTasks, predicate, $scope.reverse);
+        }
     };
+
 }]);
