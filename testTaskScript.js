@@ -1,10 +1,13 @@
 var testModule = angular.module("testModule", ['ngAnimate', 'ui.bootstrap']);
-testModule.controller("testCtrl", function ($scope) {
+testModule.controller("testCtrl", ['$scope', function ($scope) {
     var hasActualTask = function (expcetedTaskName) {
             var hasTask = false;
 
             for(task in $scope.tasks){
-                hasTask = $scope.tasks[task].name === expcetedTaskName;
+                if($scope.tasks[task].name === expcetedTaskName){
+                    hasTask = true;
+                    break;
+                }
             }
 
             return hasTask;
@@ -20,10 +23,62 @@ testModule.controller("testCtrl", function ($scope) {
         $scope.datePickerErrorMsg = message;
     };
 
-    $scope.newTask = {
-        'date': currentDate
+    var setDefaultTask = function () {
+        $scope.newTask = {
+            'date': currentDate
+        };
     };
+    setDefaultTask();
+    
     $scope.tasks = [];
+
+    $scope.testTasks = [
+        {
+            name: 'Abcd', hours: 1, date: Date.today().add(1).days().toString("MM/dd/yyyy")
+        },
+        {
+            name: 'Hij', hours: 3, date: Date.today().add(3).days().toString("MM/dd/yyyy")
+        },
+        {
+            name: 'Efg', hours: 5, date: Date.today().add(2).days().toString("MM/dd/yyyy")
+        },
+
+        {
+            name: 'Abdc', hours: 4, date: Date.today().add(5).days().toString("MM/dd/yyyy")
+        },
+        {
+            name: 'Hab', hours: 2, date: Date.today().add(4).days().toString("MM/dd/yyyy")
+        },
+        {
+            name: 'Test 6', hours: 1, date: Date.today().add(6).days().toString("MM/dd/yyyy")
+        },
+
+        {
+            name: 'Test 7', hours: 1, date: Date.today().add(7).days().toString("MM/dd/yyyy")
+        },
+        {
+            name: 'Test 8', hours: 1, date: Date.today().add(8).days().toString("MM/dd/yyyy")
+        },
+        {
+            name: 'Test 9', hours: 1, date: Date.today().add(9).days().toString("MM/dd/yyyy")
+        },
+        {
+            name: 'Test 10', hours: 1, date: Date.today().add(10).days().toString("MM/dd/yyyy")
+        },
+
+        {
+            name: 'Test 11', hours: 1, date: Date.today().add(11).days().toString("MM/dd/yyyy")
+        },
+        {
+            name: 'Test 12', hours: 1, date: Date.today().add(12).days().toString("MM/dd/yyyy")
+        },
+        {
+            name: 'Test 13', hours: 1, date: Date.today().add(13).days().toString("MM/dd/yyyy")
+        },
+        {
+            name: 'Test 14', hours: 1, date: Date.today().add(14).days().toString("MM/dd/yyyy")
+        }
+    ];
 
     $scope.isTaskNameDuplicate = function(taskNameInput){
         if(taskNameInput.$pristine || !taskNameInput.$modelValue){
@@ -37,6 +92,8 @@ testModule.controller("testCtrl", function ($scope) {
         $scope.tasks.push({
             name: newTask.name, hours: newTask.hours, date: newTask.date.toString("MM/dd/yyyy")
         });
+
+        setDefaultTask();
     };
 
     $scope.clearAll = function () {
@@ -47,6 +104,8 @@ testModule.controller("testCtrl", function ($scope) {
 
         setDueDateValid(true);
     };
+
+    //DatePicker
 
     $scope.clear = function () {
         $scope.date = null;
@@ -82,4 +141,27 @@ testModule.controller("testCtrl", function ($scope) {
         $scope.newTask.date = currentDate;
         setDueDateValid(false);
     };
-});
+
+    // Pagination
+
+    $scope.filteredTasks = [];
+    $scope.currentPage = 1;
+    $scope.numPerPage = 5;
+    $scope.maxAmountOfPage = $scope.testTasks.length * 2;
+
+    $scope.$watch('currentPage + numPerPage', function() {
+        var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+            , end = begin + $scope.numPerPage;
+
+        $scope.filteredTasks = $scope.testTasks.slice(begin, end);
+    });
+
+    //Table Sort
+
+    $scope.predicate = '';
+    $scope.reverse = true;
+    $scope.order = function(predicate) {
+        $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+        $scope.predicate = predicate;
+    };
+}]);

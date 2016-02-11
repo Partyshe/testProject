@@ -11,8 +11,8 @@
     <script src="testTaskScript.js"></script>
     <link href="bootstrap.min.css" rel="stylesheet">
     <link href="testTaskStyle.css" rel="stylesheet">
-
 </head>
+
 <body>
 <div ng-controller="testCtrl">
 
@@ -91,26 +91,54 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-6">
-                <table class="table table-bordered ng-hide" ng-show="tasks.length > 0">
+                <table class="table table-bordered table-striped ng-hide"
+                       ng-show="testTasks.length > 0">
                     <thead>
-                    <tr>
-                        <th>Task Name</th>
-                        <th>Hours</th>
-                        <th>Due Date</th>
-                    </tr>
+                        <tr>
+                            <th>
+                                <a href="#" ng-click="order('name')">
+                                    Task Name
+                                    <span class="sortorder"
+                                          ng-show="predicate === 'name'"
+                                          ng-class="{reverse:reverse}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="#" ng-click="order('hours')">
+                                    Hours
+                                    <span class="sortorder"
+                                          ng-show="predicate === 'hours'"
+                                          ng-class="{reverse:reverse}"></span>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="#" ng-click="order('date')">
+                                    Due Date
+                                </a>
+                                <span class="sortorder"
+                                      ng-show="predicate === 'date'"
+                                      ng-class="{reverse:reverse}"></span>
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="task in tasks">
-                        <td>{{ task.name }}</td>
-                        <td>{{ task.hours }}</td>
-                        <td>{{ task.date }}</td>
-                    </tr>
+                        <tr ng-repeat="task in filteredTasks | orderBy:predicate:reverse">
+                            <td>{{ task.name }}</td>
+                            <td>{{ task.hours }}</td>
+                            <td>{{ task.date }}</td>
+                        </tr>
                     </tbody>
                 </table>
+                <uib-pagination
+                        total-items="maxAmountOfPage"
+                        ng-model="currentPage"
+                        max-size="5"
+                        class="pagination-sm"
+                        boundary-links="true">
+                </uib-pagination>
             </div>
         </div>
     </div>
-
 </div>
 
 </body>

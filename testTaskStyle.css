@@ -19,3 +19,10 @@ th, td {
 .marginRight10 {
     margin-right: 10px;
 }
+
+.sortorder:after {
+    content: '\25b2';
+}
+.sortorder.reverse:after {
+    content: '\25bc';
+}
