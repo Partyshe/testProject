@@ -18,7 +18,8 @@
                     '$scope',
                     '$filter',
                     gridUiController],
-                templateUrl:  $sce.trustAsResourceUrl('http://localhost:8080/gridUITemplate.html')
+                templateUrl:  $sce.trustAsResourceUrl('src/directives/grid-ui-directive/gridUITemplate.html')
+                //http://localhost:8080/gridUITemplate.html
             };
         };
 
