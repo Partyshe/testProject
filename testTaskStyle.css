@@ -20,9 +20,9 @@ th, td {
     margin-right: 10px;
 }
 
-.sortorder:after {
+.sortOrder:after {
     content: '\25b2';
 }
-.sortorder.reverse:after {
+.sortOrder.reverse:after {
     content: '\25bc';
 }

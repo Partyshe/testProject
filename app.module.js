@@ -1,0 +1,1 @@
+angular.module("appTest", ['ngAnimate', 'ui.bootstrap']);

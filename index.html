@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Test Module</title>
+
+    <script src="http://www.datejs.com/build/date.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="https://code.angularjs.org/1.4.9/angular-animate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.2/ui-bootstrap-tpls.min.js"></script>
+
+    <script type="text/javascript" src="testData.json"></script>
+    <script src="app.module.js"></script>
+    <script src="src/controllers/base.controller.js"></script>
+    <script src="src/controllers/datePicker.controller.js"></script>
+    <script src="src/controllers/test.controller.js"></script>
+    <script src="src/directives/grid-ui-directive/grid-ui.directive.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="testTaskStyle.css">
+</head>
+
+<body ng-app="appTest">
+    <div ng-controller="TestCtrl">
+
+        <!--FORM INPUTS-->
+        <div class="container">
+            <form name="form" class="form-horizontal" role="form" novalidate>
+
+                <!-- TASK NAME -->
+                <div class="form-group">
+                    <fieldset>
+                        <label class="labelLeft control-label col-xs-2" for="taskName">Task Name *</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="newTask.name" name="taskName" required=""
+                                   maxlength="30"/>
+                        </div>
+
+                        <span class="error" ng-show="isTaskNameDuplicate(form.taskName)">
+                                This task name already exists.
+                        </span>
+                    </fieldset>
+                </div>
+
+                <!-- HOURS -->
+                <div class="form-group">
+                    <label class="labelLeft control-label col-xs-2" for="taskTime">Hours *</label>
+                    <div class="col-sm-2">
+                        <input type="number" class="form-control" ng-model="newTask.hours" name="taskTime" required=""
+                               min="0"/>
+                    </div>
+                </div>
+
+                <!-- DUE DATE -->
+                <div class="form-group" ng-controller="DatePickerCtrl">
+                        <label class="labelLeft control-label col-md-2" for="taskDate">Due Date *</label>
+                        <div class="col-md-2">
+                            <div class="input-group col-md-12">
+                                <input id="taskDateInput"
+                                       type="text"
+                                       name="taskDate"
+                                       ng-model="newTask.date"
+                                       class="form-control"
+                                       uib-datepicker-popup
+                                       is-open="popup.opened"
+                                       datepicker-options="dateOptions"
+                                       close-text="Close"
+                                       ng-change="validateDtPicker()"
+                                       ng-paste="validateDtPicker()"
+                                       ng-required="true"/>
+
+                                <span class="input-group-btn">
+                                   <button type="button" class="btn btn-default" ng-click="open()">
+                                       <i class="glyphicon glyphicon-calendar"></i>
+                                   </button>
+                                </span>
+                            </div>
+                        </div>
+                        <span class="error" ng-show="!isDueDateValid">
+                            {{datePickerErrorMsg}}
+                        </span>
+                </div>
+
+                <div class="col-xs-6">
+                    <input class="pull-right" type="submit" ng-click="addTask(newTask)" value="Add"
+                           ng-disabled="form.$invalid || isTaskNameDuplicate(form.taskName)"/>
+                    <input class="marginRight10 pull-right" type="button" ng-click="clearAll(form)" value="Clear All"/>
+                </div>
+            </form>
+        </div>
+
+        </br>
+        </br>
+
+        <!--TABLE-->
+        <grid-ui collection="testTasks"></grid-ui>
+        <!--Table END-->
+    </div>
+</body>
+</html>

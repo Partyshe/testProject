@@ -1,0 +1,85 @@
+﻿<!--TABLE-->
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6">
+            <table class="table table-bordered table-striped ng-hide"
+                   ng-show="collection && collection.length > 0">
+                <thead>
+                <tr>
+                    <th>
+                        <div class="pull-left" uib-collapse="searchItem === 'name'">
+                            <a href="#" ng-click="customOrder('name')" ng-show="searchItem != 'name'">
+                                Task Name
+                                <span class="sortOrder"
+                                      ng-show="predicate === 'name'"
+                                      ng-class="{reverse:reverse}">
+                                </span>
+                            </a>
+                        </div>
+                        <div class="pull-left" uib-collapse="searchItem != 'name'">
+                            <input ng-change="setFilteredCollection($eval('collection | filter:query'))"
+                                   ng-model="query.name">
+                        </div>
+                        <button class="glyphicon glyphicon-search pull-right"
+                                aria-hidden="true"
+                                ng-click="searchPreparation('name')">
+                        </button>
+                    </th>
+                    <th>
+                        <div class="pull-left" uib-collapse="searchItem === 'hours'">
+                            <a href="#" ng-click="customOrder('hours')" ng-show="searchItem != 'hours'">
+                                Hours
+                                    <span class="sortOrder"
+                                          ng-show="predicate === 'hours'"
+                                          ng-class="{reverse:reverse}">
+                                    </span>
+                            </a>
+                        </div>
+                        <div class="pull-left" uib-collapse="searchItem != 'hours'">
+                            <input ng-change="setFilteredCollection($eval('collection | filter:query'))"
+                                   ng-model="query.hours">
+                        </div>
+                        <button class="glyphicon glyphicon-search pull-right"
+                                aria-hidden="true"
+                                ng-click="searchPreparation('hours')">
+                        </button>
+                    </th>
+                    <th>
+                        <div class="pull-left" uib-collapse="searchItem === 'date'">
+                            <a href="#" ng-click="customOrder('date')" ng-show="searchItem != 'date'">
+                                Due Date
+                            <span class="sortOrder"
+                                  ng-show="predicate === 'date'"
+                                  ng-class="{reverse:reverse}">
+                            </span>
+                            </a>
+                        </div>
+                        <div class="pull-left" uib-collapse="searchItem != 'date'">
+                            <input  ng-change="setFilteredCollection($eval('collection | filter:query'))"
+                                    ng-model="query.date">
+                        </div>
+                        <button class="glyphicon glyphicon-search pull-right"
+                                aria-hidden="true"
+                                ng-click="searchPreparation('date')">
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="task in pageItems">
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.hours }}</td>
+                    <td>{{ task.date }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <uib-pagination
+                    total-items="maxAmountOfPage"
+                    ng-model="currentPage"
+                    max-size="maxSize"
+                    class="pagination-sm"
+                    boundary-links="true">
+            </uib-pagination>
+        </div>
+    </div>
+</div>
